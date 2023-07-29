@@ -1,0 +1,25 @@
+.profile__avatar-wrapper {
+    position: relative;
+    cursor: pointer;
+}
+.profile__avatar-wrapper:before {
+    background-color: rgba(0, 0, 0, 0.8);
+    background-image: url(../../../images/pen.svg);
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: 26px;
+    border-radius: 100px;
+    content: "";
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    transition: 0.3s;
+    visibility: hidden;
+    opacity: 0;
+    width: 100%;
+}
+.profile__avatar-wrapper:hover:before {
+    visibility: visible;
+    opacity: 1;
+}

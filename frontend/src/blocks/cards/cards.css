@@ -1,0 +1,15 @@
+.cards {
+    box-sizing: border-box;
+    max-width: 920px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 19px 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(282px, 282px));
+    gap: 20px 17px;
+}
+@media (max-width: 769px) {
+    .cards {
+        padding-top: 36px;
+    }
+}

@@ -1,0 +1,7 @@
+.card__inner {
+    display: flex;
+    grid-area: 2/2/3/3;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

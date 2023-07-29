@@ -1,0 +1,12 @@
+.profile__wrapper {
+    position: relative;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+@media (max-width: 769px) {
+    .profile__wrapper {
+        max-width: fit-content;
+        margin: 0 auto 33px;
+    }
+}

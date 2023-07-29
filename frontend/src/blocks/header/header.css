@@ -1,0 +1,23 @@
+.header {
+    box-sizing: border-box;
+    max-width: 880px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 45px 0 40px;
+    border-bottom: 1px solid rgba(84, 84, 84, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+@media (max-width: 920px) {
+    .header {
+        padding-left: 27px;
+        padding-right: 27px;
+    }
+}
+@media (max-width: 769px) {
+    .header {
+        padding-top: 28px;
+        padding-bottom: 28px;
+    }
+}

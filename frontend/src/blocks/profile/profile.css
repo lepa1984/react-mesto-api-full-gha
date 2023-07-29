@@ -1,0 +1,18 @@
+.profile {
+    box-sizing: border-box;
+    max-width: 920px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 19px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 30px;
+}
+@media (max-width: 769px) {
+    .profile {
+        display: block;
+        text-align: center;
+        padding-top: 42px;
+    }
+}
