@@ -12,10 +12,10 @@ class Auth {
 
     async register(email, password) {
         const res = await fetch(`${this._baseUrl}/signup`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password }),
         });
@@ -24,10 +24,10 @@ class Auth {
 
     async login(email, password) {
         const res = await fetch(`${this._baseUrl}/signin`, {
-            method: "POST",
+            method: 'POST',
             headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
             },
             body: JSON.stringify({ email, password }),
         });
@@ -36,10 +36,10 @@ class Auth {
 
     async checkToken(token) {
         const res = await fetch(`${this._baseUrl}/users/me`, {
-            method: "GET",
+            method: 'GET',
             headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
                 Authorization: `Bearer ${token}`,
             },
         });
@@ -48,7 +48,7 @@ class Auth {
 }
 
 const auth = new Auth({
-    baseUrl: "https://auth.nomoreparties.co",
+    baseUrl: 'https://lepa1984.nomoredomains.xyz',
 });
 
 export default auth;

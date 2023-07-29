@@ -11,7 +11,7 @@ class Api {
     }
     async getCards() {
         const res = await fetch(`${this.baseUrl}/cards`, {
-            method: "GET",
+            method: 'GET',
             headers: this.headers,
         });
         return this._getResponseData(res);
@@ -19,7 +19,7 @@ class Api {
 
     async getUserInfo() {
         const res = await fetch(`${this.baseUrl}/users/me`, {
-            method: "GET",
+            method: 'GET',
             headers: this.headers,
         });
         return this._getResponseData(res);
@@ -27,7 +27,7 @@ class Api {
 
     async newCard({ name, link }) {
         const res = await fetch(`${this.baseUrl}/cards`, {
-            method: "POST",
+            method: 'POST',
             headers: this.headers,
             body: JSON.stringify({
                 name,
@@ -39,7 +39,7 @@ class Api {
 
     async deleteCards(cardId) {
         const res = await fetch(`${this.baseUrl}/cards/${cardId}`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: this.headers,
         });
         return this._getResponseData(res);
@@ -47,7 +47,7 @@ class Api {
 
     async updateUserInfo(data) {
         const res = await fetch(`${this.baseUrl}/users/me`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: this.headers,
 
             body: JSON.stringify({
@@ -60,7 +60,7 @@ class Api {
 
     async updateAvatarInfo(data) {
         const res = await fetch(`${this.baseUrl}/users/me/avatar`, {
-            method: "PATCH",
+            method: 'PATCH',
             headers: this.headers,
             body: JSON.stringify({
                 avatar: data.avatar,
@@ -71,7 +71,7 @@ class Api {
 
     async addLike(cardId) {
         const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
-            method: "PUT",
+            method: 'PUT',
             headers: this.headers,
         });
         return this._getResponseData(res);
@@ -79,7 +79,7 @@ class Api {
 
     async removeLike(cardId) {
         const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
-            method: "DELETE",
+            method: 'DELETE',
             headers: this.headers,
         });
         return this._getResponseData(res);
@@ -87,10 +87,10 @@ class Api {
 }
 
 const api = new Api({
-    baseUrl: "https://mesto.nomoreparties.co/v1/cohort-64",
+    baseUrl: 'lepa1984.nomoredomains.xy.nomoredomains.sbs',
     headers: {
-        authorization: "13e186c5-85ac-489b-b88e-7248260de319",
-        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+        'Content-Type': 'application/json',
     },
 });
 export default api;

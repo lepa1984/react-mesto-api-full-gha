@@ -5,21 +5,20 @@ const User = require('../models/user');
 const BadRequestError = require('../errors/BadRequest');
 const NotFoundError = require('../errors/NotFound');
 const ConflictError = require('../errors/ConflictError');
-const { JWT_SECRET, NODE_ENV } = process.env;
 
 const createUser = (req, res, next) => {
-  const {
-    name, about, avatar, email, password,
-  } = req.body;
+  const { name, about, avatar, email, password } = req.body;
   bcrypt
     .hash(password, 10)
-    .then((hash) => User.create({
-      email,
-      password: hash,
-      name,
-      about,
-      avatar,
-    }))
+    .then((hash) =>
+      User.create({
+        email,
+        password: hash,
+        name,
+        about,
+        avatar,
+      })
+    )
     .then(() => {
       res.status(201).send({
         name,
@@ -30,9 +29,15 @@ const createUser = (req, res, next) => {
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при создании пользователя'));
+        next(
+          new BadRequestError(
+            'Переданы некорректные данные при создании пользователя'
+          )
+        );
       } else if (error.code === 11000) {
-        next(new ConflictError('Пользователь с таким email уже зарегистрирован'));
+        next(
+          new ConflictError('Пользователь с таким email уже зарегистрирован')
+        );
       } else {
         next(error);
       }
@@ -42,9 +47,17 @@ const createUser = (req, res, next) => {
 const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
-    .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'unique-secret-key', { expiresIn: '7d' });
-            return res.status(200).send({ token });
+    .then(() => {
+      User.findOne({ email })
+        .select('+password')
+        .then((user) => {
+          const token = jwt.sign(
+            { _id: user._id },
+            NODE_ENV === 'production' ? JWT_SECRET : 'unique-secret-key',
+            { expiresIn: '7d' }
+          );
+          return res.send({ token });
+        });
     })
     .catch((error) => {
       next(error);
@@ -83,7 +96,7 @@ const updateUserInfo = (req, res, next) => {
   User.findByIdAndUpdate(
     req.user._id,
     { name, about },
-    { new: true, runValidators: true },
+    { new: true, runValidators: true }
   )
     .then((user) => {
       if (!user) {
@@ -93,7 +106,11 @@ const updateUserInfo = (req, res, next) => {
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
+        next(
+          new BadRequestError(
+            'Переданы некорректные данные при обновлении профиля'
+          )
+        );
       } else {
         next(error);
       }
@@ -112,7 +129,11 @@ const updateAvatar = (req, res, next) => {
     })
     .catch((error) => {
       if (error.name === 'ValidationError') {
-        next(new BadRequestError('Переданы некорректные данные при обновлении профиля'));
+        next(
+          new BadRequestError(
+            'Переданы некорректные данные при обновлении профиля'
+          )
+        );
       } else {
         next(error);
       }
