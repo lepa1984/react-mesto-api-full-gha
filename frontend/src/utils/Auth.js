@@ -48,7 +48,7 @@ class Auth {
 }
 
 const auth = new Auth({
-    baseUrl: 'https://lepa1984.nomoredomains.xyz',
+    baseUrl: 'lepa1984.nomoredomains.xy.nomoredomains.sbs',
 });
 
 export default auth;
