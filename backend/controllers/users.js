@@ -5,7 +5,7 @@ const User = require('../models/user');
 const BadRequestError = require('../errors/BadRequest');
 const NotFoundError = require('../errors/NotFound');
 const ConflictError = require('../errors/ConflictError');
-
+const { NODE_ENV, JWT_SECRET } = process.env;
 const createUser = (req, res, next) => {
   const { name, about, avatar, email, password } = req.body;
   bcrypt
@@ -48,9 +48,13 @@ const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, 'unique-secret-key', {
-        expiresIn: '7d',
-      });
+      const token = jwt.sign(
+        { _id: user._id },
+        NODE_ENV === 'production' ? JWT_SECRET : 'super-secret',
+        {
+          expiresIn: '7d',
+        }
+      );
       res
         .cookie('jwt', token, {
           maxAge: 3600000 * 24 * 7,
