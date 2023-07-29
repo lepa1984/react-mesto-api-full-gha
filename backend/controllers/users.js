@@ -47,17 +47,16 @@ const createUser = (req, res, next) => {
 const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
-    .then(() => {
-      User.findOne({ email })
-        .select('+password')
-        .then((user) => {
-          const token = jwt.sign(
-            { _id: user._id },
-            NODE_ENV === 'production' ? JWT_SECRET : 'unique-secret-key',
-            { expiresIn: '7d' }
-          );
-          return res.send({ token });
-        });
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, 'unique-secret-key', {
+        expiresIn: '7d',
+      });
+      res
+        .cookie('jwt', token, {
+          maxAge: 3600000 * 24 * 7,
+          httpOnly: true,
+        })
+        .send({ token });
     })
     .catch((error) => {
       next(error);
