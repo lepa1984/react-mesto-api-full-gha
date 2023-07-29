@@ -23,6 +23,11 @@ app.use(helmet());
 app.use(requestLogger);
 app.use(cors);
 app.use(express.json());
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
 app.use(routers);
 app.use(errorLogger);
 app.use(errors());
