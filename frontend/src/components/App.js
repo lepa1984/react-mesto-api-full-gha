@@ -118,20 +118,18 @@ export default function App() {
         setSelectedCard(null);
         setIsInfoTooltipOpen(false);
     }
-    React.useEffect(() => {
-        const jwt = localStorage.getItem('jwt');
 
+    function handleTokenCheck() {
+        const jwt = localStorage.getItem('jwt');
+        console.log(jwt);
         if (jwt) {
-            auth.checkToken(jwt)
-                .then((res) => {
-                    console.log(res.email);
-                    setUserEmail(res.email);
-                    setIsLoggedIn(true);
-                    navigate('/');
-                })
-                .catch((err) => console.log(err));
+            auth.checkToken(jwt).then((res) => {
+                setUserEmail(res.email);
+                setIsLoggedIn(true);
+                navigate('/', { replace: true });
+            });
         }
-    }, []);
+    }
     function handleRegister(email, password) {
         auth.register(email, password)
             .then((res) => {
@@ -165,6 +163,10 @@ export default function App() {
         navigate('/sign-in', { replace: true });
         setIsLoggedIn(false);
     }
+    React.useEffect(() => {
+        handleTokenCheck();
+    }, []);
+
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <div className='App'>
