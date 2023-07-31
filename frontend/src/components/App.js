@@ -1,19 +1,19 @@
-import React from "react";
-import Header from "./Header.js";
-import Footer from "./Footer.js";
-import Main from "./Main.js";
-import { Routes, Route, useNavigate } from "react-router-dom";
-import ImagePopup from "./ImagePopup.js";
-import api from "../utils/Api.js";
-import { CurrentUserContext } from "../contexts/CurrentUserContext.js";
-import EditProfilePopup from "./EditProfilePopup.js";
-import EditAvatarPopup from "./EditAvatarPopup.js";
-import AddPlacePopup from "./AddPlacePopup.js";
-import ProtectedRoute from "./ProtectedRoute.js";
-import Login from "./Login.js";
-import Register from "./Register.js";
-import InfoToolTip from "./InfoToolTip.js";
-import auth from "../utils/Auth.js";
+import React from 'react';
+import Header from './Header.js';
+import Footer from './Footer.js';
+import Main from './Main.js';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import ImagePopup from './ImagePopup.js';
+import api from '../utils/Api.js';
+import { CurrentUserContext } from '../contexts/CurrentUserContext.js';
+import EditProfilePopup from './EditProfilePopup.js';
+import EditAvatarPopup from './EditAvatarPopup.js';
+import AddPlacePopup from './AddPlacePopup.js';
+import ProtectedRoute from './ProtectedRoute.js';
+import Login from './Login.js';
+import Register from './Register.js';
+import InfoToolTip from './InfoToolTip.js';
+import auth from '../utils/Auth.js';
 export default function App() {
     const [isEditProfilePopupOpen, setProfilePopupOpen] = React.useState(false);
     const [isAddPlacePopupOpen, setAddPopupOpen] = React.useState(false);
@@ -25,21 +25,16 @@ export default function App() {
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
     const [isSucceeded, setIsSucceeded] = React.useState(false);
     const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
-    const [userEmail, setUserEmail] = React.useState("");
+    const [userEmail, setUserEmail] = React.useState('');
     const navigate = useNavigate();
     React.useEffect(() => {
         if (isLoggedIn) {
-            api.getCards()
-                .then((data) => {
-                    setCards(data);
+            Promise.all([api.getCards(), api.getUserInfo()])
+                .then(([userData, cards]) => {
+                    setCurrentUser(userData);
+                    setCards(cards);
                 })
-                .catch((err) => {
-                    console.log(`Ошибка сервера ${err}`);
-                });
-            api.getUserInfo()
-                .then((data) => {
-                    setCurrentUser(data);
-                })
+
                 .catch((err) => console.log(err));
         }
     }, [isLoggedIn]);
@@ -125,14 +120,14 @@ export default function App() {
         setIsInfoTooltipOpen(false);
     }
     React.useEffect(() => {
-        const jwt = localStorage.getItem("jwt");
+        const jwt = localStorage.getItem('jwt');
 
         if (jwt) {
             auth.checkToken(jwt)
                 .then((res) => {
                     setUserEmail(res.data.email);
                     setIsLoggedIn(true);
-                    navigate("/");
+                    navigate('/');
                 })
                 .catch((err) => console.log(err));
         }
@@ -142,7 +137,7 @@ export default function App() {
             .then((res) => {
                 setIsInfoTooltipOpen(true);
                 setIsSucceeded(true);
-                navigate("/sign-in", { replace: true });
+                navigate('/sign-in', { replace: true });
             })
             .catch((err) => {
                 setIsInfoTooltipOpen(true);
@@ -155,7 +150,7 @@ export default function App() {
             .then((res) => {
                 if (res) {
                     setIsLoggedIn(true);
-                    navigate("/", { replace: true });
+                    navigate('/', { replace: true });
                     setUserEmail(email);
                 }
             })
@@ -166,18 +161,18 @@ export default function App() {
             });
     }
     function handleLogout() {
-        localStorage.removeItem("jwt");
-        navigate("/sign-in", { replace: true });
+        localStorage.removeItem('jwt');
+        navigate('/sign-in', { replace: true });
         setIsLoggedIn(false);
     }
     return (
         <CurrentUserContext.Provider value={currentUser}>
-            <div className="App">
-                <div className="page">
+            <div className='App'>
+                <div className='page'>
                     <Header onLogOut={handleLogout} email={userEmail} />
                     <Routes>
                         <Route
-                            path="/"
+                            path='/'
                             element={
                                 <ProtectedRoute
                                     isLoggedIn={isLoggedIn}
@@ -193,42 +188,42 @@ export default function App() {
                             }
                         />
                         <Route
-                            path="/sign-up"
+                            path='/sign-up'
                             element={<Register onRegister={handleRegister} />}
                         />
                         <Route
-                            path="/sign-in"
+                            path='/sign-in'
                             element={<Login onLogin={handleLogin} />}
                         />
                     </Routes>
                     <Footer />
                     <ImagePopup
-                        name="img"
+                        name='img'
                         card={selectedCard}
                         onClose={closeAllPopups}
                         isOpen={selectedCard}
                     />
                     <EditProfilePopup
-                        name="profile"
+                        name='profile'
                         isOpen={isEditProfilePopupOpen}
                         onClose={closeAllPopups}
                         onUpdateUser={handleUpdateUser}
                     />
                     <EditAvatarPopup
-                        name="avatar"
+                        name='avatar'
                         isOpen={isEditAvatarPopupOpen}
                         onClose={closeAllPopups}
                         onUpdateAvatar={handleUpdateAvatar}
                     />
                     <AddPlacePopup
-                        name="add"
+                        name='add'
                         isOpen={isAddPlacePopupOpen}
                         onClose={closeAllPopups}
                         onUpdateAvatar={handleUpdateAvatar}
                         onAddPlace={handleAddPlaceSubmit}
                     />
                     <InfoToolTip
-                        name={"info"}
+                        name={'info'}
                         isSucceeded={isSucceeded}
                         isOpen={isInfoTooltipOpen}
                         onClose={closeAllPopups}
