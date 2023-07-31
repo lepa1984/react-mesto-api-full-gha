@@ -125,6 +125,7 @@ export default function App() {
         if (jwt) {
             auth.checkToken(jwt)
                 .then((res) => {
+                    console.log(res.email);
                     setUserEmail(res.data.email);
                     setIsLoggedIn(true);
                     navigate('/');
