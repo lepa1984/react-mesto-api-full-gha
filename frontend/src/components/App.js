@@ -21,7 +21,6 @@ export default function App() {
     const [selectedCard, setSelectedCard] = React.useState(null);
     const [currentUser, setCurrentUser] = React.useState({});
     const [cards, setCards] = React.useState([]);
-
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
     const [isSucceeded, setIsSucceeded] = React.useState(false);
     const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
