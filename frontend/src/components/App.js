@@ -14,18 +14,21 @@ import Login from './Login.js';
 import Register from './Register.js';
 import InfoToolTip from './InfoToolTip.js';
 import auth from '../utils/Auth.js';
+
 export default function App() {
+    const [cards, setCards] = React.useState([]);
     const [isEditProfilePopupOpen, setProfilePopupOpen] = React.useState(false);
     const [isAddPlacePopupOpen, setAddPopupOpen] = React.useState(false);
     const [isEditAvatarPopupOpen, setAvatarPopupOpen] = React.useState(false);
     const [selectedCard, setSelectedCard] = React.useState(null);
     const [currentUser, setCurrentUser] = React.useState({});
-    const [cards, setCards] = React.useState([]);
+
     const [isLoggedIn, setIsLoggedIn] = React.useState(false);
     const [isSucceeded, setIsSucceeded] = React.useState(false);
     const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
     const [userEmail, setUserEmail] = React.useState('');
     const navigate = useNavigate();
+    console.log(cards);
     React.useEffect(() => {
         if (isLoggedIn) {
             Promise.all([api.getCards(), api.getUserInfo()])
@@ -121,7 +124,6 @@ export default function App() {
 
     function handleTokenCheck() {
         const jwt = localStorage.getItem('jwt');
-        console.log(jwt);
         if (jwt) {
             auth.checkToken(jwt).then((res) => {
                 setUserEmail(res.email);
@@ -146,7 +148,6 @@ export default function App() {
     function handleLogin(email, password) {
         auth.login(email, password)
             .then((res) => {
-                console.log(res.token);
                 if (res) {
                     setUserEmail(email);
                     localStorage.setItem('jwt', res.token);
@@ -167,7 +168,7 @@ export default function App() {
     }
     React.useEffect(() => {
         handleTokenCheck();
-    }, []);
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <CurrentUserContext.Provider value={currentUser}>
@@ -179,15 +180,15 @@ export default function App() {
                             path='/'
                             element={
                                 <ProtectedRoute
-                                    isLoggedIn={isLoggedIn}
                                     element={Main}
+                                    isLoggedIn={isLoggedIn}
+                                    cards={cards}
                                     onEditAvatar={handleEditAvatarClick}
                                     onEditProfile={handleEditProfileClick}
                                     onAddPlace={handleAddPlaceClick}
                                     onCardClick={handleCardClick}
                                     onLikeClick={handleCardLike}
                                     onCardDelete={handleCardDelete}
-                                    cards={cards}
                                 />
                             }
                         />
