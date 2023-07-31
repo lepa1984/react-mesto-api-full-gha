@@ -146,10 +146,12 @@ export default function App() {
     function handleLogin(email, password) {
         auth.login(email, password)
             .then((res) => {
+                console.log(res.token);
                 if (res) {
+                    setUserEmail(email);
+                    localStorage.setItem('jwt', res.token);
                     setIsLoggedIn(true);
                     navigate('/', { replace: true });
-                    setUserEmail(email);
                 }
             })
             .catch((err) => {
