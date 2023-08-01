@@ -1,7 +1,6 @@
 class Api {
     constructor({ baseUrl, headers }) {
         this.baseUrl = baseUrl;
-        this.headers = headers;
     }
     _getResponseData(res) {
         if (!res.ok) {
@@ -13,7 +12,10 @@ class Api {
     async getCards() {
         const res = await fetch(`${this.baseUrl}/cards`, {
             method: 'GET',
-            headers: this.headers,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json',
+            },
         });
         return this._getResponseData(res);
     }
@@ -23,14 +25,20 @@ class Api {
                 this.baseUrl + '/cards/' + cardId + '/likes',
                 {
                     method: 'PUT',
-                    headers: this.headers,
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                        'Content-Type': 'application/json',
+                    },
                 }
             );
             return this._getResponseData(res);
         } else {
             const res_2 = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
                 method: 'DELETE',
-                headers: this.headers,
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                    'Content-Type': 'application/json',
+                },
             });
             return this._getResponseData(res_2);
         }
@@ -38,7 +46,10 @@ class Api {
     async getUserInfo() {
         const res = await fetch(`${this.baseUrl}/users/me`, {
             method: 'GET',
-            headers: this.headers,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json',
+            },
         });
         return this._getResponseData(res);
     }
@@ -46,7 +57,10 @@ class Api {
     async newCard({ name, link }) {
         const res = await fetch(`${this.baseUrl}/cards`, {
             method: 'POST',
-            headers: this.headers,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({
                 name,
                 link,
@@ -58,7 +72,10 @@ class Api {
     async deleteCards(cardId) {
         const res = await fetch(`${this.baseUrl}/cards/${cardId}`, {
             method: 'DELETE',
-            headers: this.headers,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json',
+            },
         });
         return this._getResponseData(res);
     }
@@ -66,7 +83,10 @@ class Api {
     async updateUserInfo(data) {
         const res = await fetch(`${this.baseUrl}/users/me`, {
             method: 'PATCH',
-            headers: this.headers,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({
                 name: data.name,
                 about: data.about,
@@ -78,7 +98,10 @@ class Api {
     async updateAvatarInfo(data) {
         const res = await fetch(`${this.baseUrl}/users/me/avatar`, {
             method: 'PATCH',
-            headers: this.headers,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify({
                 avatar: data.avatar,
             }),
@@ -89,7 +112,10 @@ class Api {
     async addLike(cardId) {
         const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
             method: 'PUT',
-            headers: this.headers,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json',
+            },
         });
         return this._getResponseData(res);
     }
@@ -97,7 +123,10 @@ class Api {
     async removeLike(cardId) {
         const res = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
             method: 'DELETE',
-            headers: this.headers,
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+                'Content-Type': 'application/json',
+            },
         });
         return this._getResponseData(res);
     }
@@ -105,9 +134,5 @@ class Api {
 
 const api = new Api({
     baseUrl: 'https://lepa1984.nomoredomains.xy.nomoredomains.sbs',
-    headers: {
-        Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-        'Content-Type': 'application/json',
-    },
 });
 export default api;
