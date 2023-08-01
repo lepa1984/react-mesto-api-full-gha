@@ -35,8 +35,7 @@ class Auth {
     }
 
     async checkToken(token) {
-        console.log(token);
-        const res = await fetch(`${this._baseUrl}/users/me`, {
+              const res = await fetch(`${this._baseUrl}/users/me`, {
             method: 'GET',
             headers: {
                 Accept: 'application/json',

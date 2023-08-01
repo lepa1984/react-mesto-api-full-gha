@@ -28,16 +28,23 @@ export default function App() {
     const [isInfoTooltipOpen, setIsInfoTooltipOpen] = React.useState(false);
     const [userEmail, setUserEmail] = React.useState('');
     const navigate = useNavigate();
-    console.log(cards);
+
     React.useEffect(() => {
         if (isLoggedIn) {
-            Promise.all([api.getCards(), api.getUserInfo()])
-                .then(([userData, cards]) => {
-                    setCurrentUser(userData);
-                    setCards(cards);
+            api.getUserInfo()
+                .then((user) => {
+                    setCurrentUser(user);
                 })
-
-                .catch((err) => console.log(err));
+                .catch((err) => {
+                    console.error(err);
+                });
+            api.getCards()
+                .then((card) => {
+                    setCards(card);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
         }
     }, [isLoggedIn]);
 
@@ -53,27 +60,17 @@ export default function App() {
     function handleCardClick(card) {
         setSelectedCard(card);
     }
-
     function handleCardLike(card) {
-        const isLiked = card.likes.some((i) => i._id === currentUser._id);
-
-        if (isLiked) {
-            api.removeLike(card._id)
-                .then((newCard) => {
-                    setCards((state) =>
-                        state.map((c) => (c._id === card._id ? newCard : c))
-                    );
-                })
-                .catch((err) => console.log(err));
-        } else {
-            api.addLike(card._id)
-                .then((newCard) => {
-                    setCards((state) =>
-                        state.map((c) => (c._id === card._id ? newCard : c))
-                    );
-                })
-                .catch((err) => console.log(err));
-        }
+        const isLiked = card.likes.includes(currentUser._id);
+        api.changeLikeCardStatus(card._id, !isLiked)
+            .then((newCard) => {
+                setCards((state) =>
+                    state.map((c) => (c._id === card._id ? newCard : c))
+                );
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }
 
     function handleCardDelete(card) {

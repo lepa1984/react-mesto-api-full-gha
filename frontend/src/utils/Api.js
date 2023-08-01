@@ -15,10 +15,26 @@ class Api {
             method: 'GET',
             headers: this.headers,
         });
-        console.log(res);
         return this._getResponseData(res);
     }
-
+    async changeLikeCardStatus(cardId, isLiked) {
+        if (isLiked) {
+            const res = await fetch(
+                this.baseUrl + '/cards/' + cardId + '/likes',
+                {
+                    method: 'PUT',
+                    headers: this.headers,
+                }
+            );
+            return this._getResponseData(res);
+        } else {
+            const res_2 = await fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
+                method: 'DELETE',
+                headers: this.headers,
+            });
+            return this._getResponseData(res_2);
+        }
+    }
     async getUserInfo() {
         const res = await fetch(`${this.baseUrl}/users/me`, {
             method: 'GET',
